@@ -1,22 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace MVargas.Blizzard
+namespace MigsTech.Blizzard
 {
     /// <summary>
     /// Application Startup
@@ -56,7 +50,7 @@ namespace MVargas.Blizzard
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Blizzard API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Migs Tech Blizzard API", Version = "v1" });
 
                 // Only include Controllers and their Actions that have a defined group name
                 c.DocInclusionPredicate((_, api) => !string.IsNullOrWhiteSpace(api.GroupName));
@@ -93,7 +87,7 @@ namespace MVargas.Blizzard
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Blizzard API");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Migs Tech Blizzard API");
                 c.RoutePrefix = string.Empty;
                 c.EnableDeepLinking();
                 c.InjectStylesheet("/swagger-ui/BlizzardAPISwagger.css");

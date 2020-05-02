@@ -1,6 +1,6 @@
 using System;
 
-namespace MVargas.Blizzard
+namespace MigsTech.Blizzard
 {
     /// <summary>
     /// A Weather Forecast Objects.

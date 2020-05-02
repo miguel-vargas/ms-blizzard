@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>MVargas.Blizzard</RootNamespace>
-    <AssemblyName>MVargas.Blizzard</AssemblyName>
+    <RootNamespace>MigsTech.Blizzard</RootNamespace>
+    <AssemblyName>MigsTech.Blizzard</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 

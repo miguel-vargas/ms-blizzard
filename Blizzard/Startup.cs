@@ -1,12 +1,17 @@
 using System;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MigsTech.Blizzard.Controllers;
+using MigsTech.Blizzard.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -66,6 +71,26 @@ namespace MigsTech.Blizzard
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
+
+            var blizzardApi = configuration.GetSection("Blizzard").Get<BlizzardApi>();
+
+            // Make an Auth function somewhere that gets called when token is expired or null
+            // Simply save the access code so we can add it to the controller's (future service's) http client
+            //var baseUri = new Uri(blizzardApi.AuthUri);
+            //Action<HttpClient> configure = (HttpClient client) =>
+            //{
+            //    client.BaseAddress = baseUri;
+            //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+            //        "Basic", 
+            //        Convert.ToBase64String(
+            //            Encoding.ASCII.GetBytes(
+            //                $"{Encoding.UTF8.GetString(Convert.FromBase64String(blizzardApi.ClientId))}:{Encoding.UTF8.GetString(Convert.FromBase64String(blizzardApi.ClientSecret))}"
+            //                )
+            //            )
+            //        );
+            //};
+
+            //services.AddHttpClient<WoWTokenController>(configure);
         }
 
         /// <summary>

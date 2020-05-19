@@ -22,7 +22,7 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
             const string testRegion = "test";
 
             // Act
-            var response = this.controller.Get(testRegion);
+            var response = this.controller.GetTokenByRegion(testRegion);
 
             // Assert
             Assert.IsAssignableFrom<string>(response.Result);
@@ -35,7 +35,7 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
             const string testRegion = "test";
 
             // Act
-            var response = this.controller.Get(testRegion);
+            var response = this.controller.GetTokenByRegion(testRegion);
 
             // Assert
             Assert.Equal(testRegion, response.Result);

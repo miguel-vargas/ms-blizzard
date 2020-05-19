@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MigsTech.Blizzard.Services;
 
 namespace MigsTech.Blizzard.Controllers
 {
@@ -31,9 +30,8 @@ namespace MigsTech.Blizzard.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("{region}", Name = "Get WoW Token")]
-        public async Task<string> Get([FromRoute][Required] string region)
+        public async Task<string> GetTokenByRegion([FromRoute][Required] string region)
         {
-            //var service = new OAuth2Service();
             return await Task.FromResult(region);
         }
     }

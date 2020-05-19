@@ -14,9 +14,9 @@ namespace MigsTech.Blizzard.Interfaces
         Task<string> GetToken();
 
         /// <summary>
-        /// Checks if current token is invalid.
+        /// Checks if current token is valid.
         /// </summary>
         /// <returns></returns>
-        bool IsTokenInvalid();
+        bool IsTokenValid();
     }
 }

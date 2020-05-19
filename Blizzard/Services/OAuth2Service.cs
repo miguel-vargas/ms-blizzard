@@ -16,6 +16,7 @@ namespace MigsTech.Blizzard.Services
     /// </summary>
     public class OAuth2Service : IOAuth2Service
     {
+        private readonly HttpClient client;
         private readonly IConfiguration configuration;
         private readonly ILogger<OAuth2Service> logger;
 
@@ -25,10 +26,12 @@ namespace MigsTech.Blizzard.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="OAuth2Service"/> class.
         /// </summary>
+        /// <param name="client">The client.</param>
         /// <param name="configuration">The configuration</param>
         /// <param name="logger">The logger</param>
-        public OAuth2Service(IConfiguration configuration, ILogger<OAuth2Service> logger)
+        public OAuth2Service(HttpClient client, IConfiguration configuration, ILogger<OAuth2Service> logger)
         {
+            this.client = client;
             this.configuration = configuration;
             this.logger = logger;
         }
@@ -39,55 +42,46 @@ namespace MigsTech.Blizzard.Services
         /// <returns></returns>
         public async Task<string> GetToken()
         {
-            if (IsTokenInvalid())
+            if (IsTokenValid())
             {
-                using var client = new HttpClient();
-
-                var request = new HttpRequestMessage(HttpMethod.Post, new Uri(this.configuration["Blizzard:AuthUri"]))
-                {
-                    Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                    {
-                        {"grant_type", "client_credentials"},
-                    })
-                };
-
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                    "Basic",
-                    Convert.ToBase64String(
-                        Encoding.ASCII.GetBytes(
-                            $"{Encoding.UTF8.GetString(Convert.FromBase64String(this.configuration["Blizzard:ClientId"]))}:{Encoding.UTF8.GetString(Convert.FromBase64String(this.configuration["Blizzard:ClientSecret"]))}"
-                        )
-                    )
-                );
-
-                var response = await client.SendAsync(request);
-
-                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-
-                this.tokenExpiry = DateTime.Now.AddSeconds(payload.Value<double>("expires_in"));
-                this.token = payload.Value<string>("access_token");
+                return this.token;
             }
 
-            return await Task.FromResult(this.token);
+            var request = new HttpRequestMessage(HttpMethod.Post, new Uri(this.configuration["Blizzard:AuthUri"]))
+            {
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    {"grant_type", "client_credentials"},
+                })
+            };
+
+            var response = await this.client.SendAsync(request);
+
+            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+
+            this.tokenExpiry = DateTime.Now.AddSeconds(payload.Value<double>("expires_in"));
+            this.token = payload.Value<string>("access_token");
+
+            return this.token;
         }
 
         /// <summary>
-        /// Checks if current token is invalid.
+        /// Checks if current token is valid.
         /// </summary>
         /// <returns></returns>
-        public bool IsTokenInvalid()
+        public bool IsTokenValid()
         {
             if (token == null)
             {
-                return true;
+                return false;
             }
 
             if (tokenExpiry == null)
             {
-                return true;
+                return false;
             }
 
-            return DateTime.Compare(DateTime.Now, tokenExpiry.Value) > 0;
+            return DateTime.Compare(DateTime.Now, tokenExpiry.Value) < 0;
         }
     }
 }

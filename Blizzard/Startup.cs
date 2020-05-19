@@ -53,12 +53,12 @@ namespace MigsTech.Blizzard
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Migs Tech Blizzard API", Version = "v1" });
 
                 // Only include Controllers and their Actions that have a defined group name
-                c.DocInclusionPredicate((_, api) => !string.IsNullOrWhiteSpace(api.GroupName));
+                c.DocInclusionPredicate((_, controller) => !string.IsNullOrWhiteSpace(controller.GroupName));
 
                 // Rather than grouping Actions by their Controllers, we group Actions by the group name of the controller.
                 // If two separate controller files have similar business logic, we can give the two controllers the same
                 // group name and Swagger will group the Actions in those two controllers together.
-                c.TagActionsBy(api => new[] { api.GroupName });
+                c.TagActionsBy(controller => new[] { controller.GroupName });
 
                 // Include the xml comments generated at build time for each Controller/Action
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

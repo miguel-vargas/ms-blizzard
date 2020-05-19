@@ -1,17 +1,12 @@
 using System;
 using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
-using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MigsTech.Blizzard.Controllers;
-using MigsTech.Blizzard.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -72,7 +67,7 @@ namespace MigsTech.Blizzard
 
             services.AddSwaggerGenNewtonsoftSupport();
 
-            //services.AddHttpClient<WoWTokenController>(configure);
+            services.AddTokenBusinessLogic(this.configuration);
         }
 
         /// <summary>

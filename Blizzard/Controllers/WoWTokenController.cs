@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MigsTech.Blizzard.BusinessLogic.Managers;
+using MigsTech.Blizzard.Data.Models;
 
 namespace MigsTech.Blizzard.Controllers
 {
@@ -9,30 +11,50 @@ namespace MigsTech.Blizzard.Controllers
     /// The controller for getting WoW Tokens.
     /// </summary>
     [ApiController]
-    [Route("[controller]")]
+    [Route("~/wow")]
     [Produces("application/json")]
     [ApiExplorerSettings(GroupName = "WoW Token")]
     public class WoWTokenController : ControllerBase
     {
+        #region Fields and Properties
+        private readonly IWoWTokenManager wowTokenManager;
         private readonly ILogger<WoWTokenController> logger;
+        #endregion
 
+        #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="WoWTokenController"/> class.
         /// </summary>
+        /// <param name="wowTokenManager">The WoW Token Manager.</param>
         /// <param name="logger">The logger</param>
-        public WoWTokenController(ILogger<WoWTokenController> logger)
+        public WoWTokenController(IWoWTokenManager wowTokenManager, ILogger<WoWTokenController> logger)
         {
+            this.wowTokenManager = wowTokenManager;
             this.logger = logger;
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Gets the WoW Token for every region.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("tokens", Name = "Get All WoW Tokens")]
+        public async Task<WoWToken> GetAllTokens()
+        {
+            //var token = await this.wowTokenManager.GetAllWoWTokens();
+            return await Task.FromResult(new WoWToken());
         }
 
         /// <summary>
         /// Gets the WoW Token for the specified region.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("{region}", Name = "Get WoW Token")]
-        public async Task<string> GetTokenByRegion([FromRoute][Required] string region)
+        [HttpGet("tokens/{region}", Name = "Get WoW Token By Region")]
+        public async Task<WoWToken> GetTokenByRegion([FromRoute][Required] string region)
         {
-            return await Task.FromResult(region);
+            return await this.wowTokenManager.GetWoWTokenByRegion(region);
         }
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MigsTech.Blizzard.Interfaces
+namespace MigsTech.Blizzard.Data.Services
 {
     /// <summary>
     /// A service for handling the oAuth2 flow, giving us an access token every time we want to interact with an API.

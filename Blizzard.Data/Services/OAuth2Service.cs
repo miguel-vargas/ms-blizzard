@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MigsTech.Blizzard.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace MigsTech.Blizzard.Services
+namespace MigsTech.Blizzard.Data.Services
 {
     /// <summary>
     /// A service for handling the oAuth2 flow, giving us an access token every time we want to interact with an API.

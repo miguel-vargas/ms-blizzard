@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using MigsTech.Blizzard.BusinessLogic.Managers;
 using MigsTech.Blizzard.Controllers;
 using Moq;
 using Xunit;
@@ -11,8 +12,9 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
 
         public WoWTokenControllerTests()
         {
+            var wowTokenManager = new Mock<IWoWTokenManager>();
             var loggerMock = new Mock<ILogger<WoWTokenController>>();
-            this.controller = new WoWTokenController(loggerMock.Object);
+            this.controller = new WoWTokenController(wowTokenManager.Object, loggerMock.Object);
         }
 
         [Fact]

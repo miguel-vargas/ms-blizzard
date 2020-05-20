@@ -4,10 +4,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MigsTech.Blizzard.Interfaces;
-using MigsTech.Blizzard.Services;
+using MigsTech.Blizzard.BusinessLogic.Managers;
+using MigsTech.Blizzard.Data.Services;
 
-namespace MigsTech.Blizzard
+namespace MigsTech.Blizzard.BusinessLogic
 {
     /// <summary>
     /// <see cref="IServiceCollection"/> Extensions for Entitlement Business Logic.
@@ -21,7 +21,11 @@ namespace MigsTech.Blizzard
         /// <param name="configuration">The configuration.</param>
         public static void AddTokenBusinessLogic(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IWoWTokenManager, WoWTokenManager>();
+
             services.AddOAuth2ServiceClient(configuration);
+
+            services.AddWoWTokenServiceClient(configuration);
         }
 
         /// <summary>
@@ -45,6 +49,20 @@ namespace MigsTech.Blizzard
             };
 
             services.AddHttpClient<IOAuth2Service, OAuth2Service>(configure);
+        }
+
+        /// <summary>
+        /// Registers all of the dependencies into the service collection
+        /// for the WoW Token service client.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <param name="configuration">The configuration.</param>
+        public static void AddWoWTokenServiceClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            Action<HttpClient> configure = (HttpClient client) =>
+            { };
+
+            services.AddHttpClient<IWoWTokenService, WoWTokenService>(configure);
         }
     }
 }

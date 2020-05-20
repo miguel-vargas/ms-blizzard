@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace MigsTech.Blizzard.Data.Services
     {
         #region Fields and Properties
         internal const string GetWoWTokenByRegionUriPattern = "https://{0}.api.blizzard.com/data/wow/token/index";
+        internal const string ChineseUriPattern = "https://gateway.battlenet.com.{0}/data/wow/token/index";
         internal const string NamespacePattern = "namespace=dynamic-{0}";
 
         private readonly HttpClient client;
@@ -43,66 +45,73 @@ namespace MigsTech.Blizzard.Data.Services
         /// Gets the WoW Token for every region.
         /// </summary>
         /// <returns></returns>
-        // TODO: Change return type to an object with a list of WoW token items
-        public async Task<WoWToken> GetAllWoWTokens()
+        public async Task<WoWTokenResponse> GetAllWoWTokens()
         {
-            // TODO: Set up auth in a repeatable way, maybe leverage the IsTokenValid call
             var token = await this.authService.GetToken();
 
             this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            // TODO: Stick this in a foreach region block
-            var uriBuilder = new UriBuilder(string.Format(GetWoWTokenByRegionUriPattern, "us"))
+            var wowTokens = new List<WoWTokenItem>();
+
+            foreach (var wowRegion in Enum.GetValues(typeof(WowRegion)))
             {
-                Query = string.Format(NamespacePattern, "us")
-            };
+                var region = Enum.GetName(typeof(WowRegion), wowRegion)?.ToLower();
 
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(uriBuilder.ToString()));
+                var uri = BuildUriStringWithRegionQuery(region);
 
-            var response = await client.SendAsync(request);
+                var request = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
 
-            var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+                var response = await client.SendAsync(request);
 
-            var price = payload.Value<string>("price");
+                var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
 
-            var wowToken = Newtonsoft.Json.JsonConvert.DeserializeObject<WoWToken>(await response.Content.ReadAsStringAsync());
+                wowTokenItem.Region = region;
 
-            return wowToken;
+                wowTokens.Add(wowTokenItem);
+            }
+
+            return new WoWTokenResponse(wowTokens);
         }
 
         /// <summary>
         /// Gets the WoW Token for the specified region.
         /// </summary>
-        /// <param name="region">The region.</param>
+        /// <param name="wowRegion">The region.</param>
         /// <returns></returns>
-        // TODO: Change return type to WoW token items
-        public async Task<WoWToken> GetWoWTokenByRegion(string region)
+        public async Task<WoWTokenItem> GetWoWTokenByRegion(WowRegion wowRegion)
         {
-            //await this.AuthenticateWithBlizzard();
-
-            // TODO: Set up auth in a repeatable way, maybe leverage the IsTokenValid call
             var token = await this.authService.GetToken();
 
             this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var uriBuilder = new UriBuilder(string.Format(GetWoWTokenByRegionUriPattern, region))
-            {
-                Query = string.Format(NamespacePattern, region)
-            };
+            var region = Enum.GetName(typeof(WowRegion), wowRegion)?.ToLower();
 
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(uriBuilder.ToString()));
+            var uri = BuildUriStringWithRegionQuery(region);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
 
             var response = await client.SendAsync(request);
 
-            var wowToken = JsonConvert.DeserializeObject<WoWToken>(await response.Content.ReadAsStringAsync());
+            var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
 
-            return wowToken;
+            wowTokenItem.Region = region;
+
+            return wowTokenItem;
         }
 
-        //private async Task AuthenticateWithBlizzard()
-        //{
-            
-        //}
+        private static string BuildUriStringWithRegionQuery(string region)
+        {
+            return new UriBuilder(FormatUriByRegion(region))
+            {
+                Query = string.Format(NamespacePattern, region)
+            }.ToString();
+        }
+
+        private static string FormatUriByRegion(string region)
+        {
+            // Handle logic for Chinese servers
+            return region == Enum.GetName(typeof(WowRegion), WowRegion.Cn)?.ToLower() ? string.Format(ChineseUriPattern, region) : string.Format(GetWoWTokenByRegionUriPattern, region);
+        }
         #endregion
     }
 }

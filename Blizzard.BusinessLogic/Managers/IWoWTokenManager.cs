@@ -12,13 +12,13 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
         /// Gets the WoW Token for the specified region.
         /// </summary>
         /// <returns></returns>
-        Task<WoWToken> GetAllWoWTokens();
+        Task<WoWTokenResponse> GetAllWoWTokens();
 
         /// <summary>
         /// Gets the WoW Token for the specified region.
         /// </summary>
-        /// <param name="region">The region.</param>
+        /// <param name="wowRegion">The region.</param>
         /// <returns></returns>
-        Task<WoWToken> GetWoWTokenByRegion(string region);
+        Task<WoWTokenItem> GetWoWTokenByRegion(WowRegion wowRegion);
     }
 }

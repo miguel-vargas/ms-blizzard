@@ -29,21 +29,19 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
         /// Gets the WoW Token for the specified region.
         /// </summary>
         /// <returns></returns>
-        public async Task<WoWToken> GetAllWoWTokens()
+        public async Task<WoWTokenResponse> GetAllWoWTokens()
         {
-            var wowTokens = await this.wowTokenService.GetAllWoWTokens();
-
-            return wowTokens;
+            return await this.wowTokenService.GetAllWoWTokens();
         }
 
         /// <summary>
         /// Gets the WoW Token for the specified region.
         /// </summary>
-        /// <param name="region">The region.</param>
+        /// <param name="wowRegion">The region.</param>
         /// <returns></returns>
-        public async Task<WoWToken> GetWoWTokenByRegion(string region)
+        public async Task<WoWTokenItem> GetWoWTokenByRegion(WowRegion wowRegion)
         {
-            return await this.wowTokenService.GetWoWTokenByRegion(region);
+            return await this.wowTokenService.GetWoWTokenByRegion(wowRegion);
         }
         #endregion
     }

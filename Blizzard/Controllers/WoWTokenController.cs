@@ -40,10 +40,9 @@ namespace MigsTech.Blizzard.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("tokens", Name = "Get All WoW Tokens")]
-        public async Task<WoWToken> GetAllTokens()
+        public async Task<WoWTokenResponse> GetAllTokens()
         {
-            //var token = await this.wowTokenManager.GetAllWoWTokens();
-            return await Task.FromResult(new WoWToken());
+            return await this.wowTokenManager.GetAllWoWTokens();
         }
 
         /// <summary>
@@ -51,9 +50,9 @@ namespace MigsTech.Blizzard.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("tokens/{region}", Name = "Get WoW Token By Region")]
-        public async Task<WoWToken> GetTokenByRegion([FromRoute][Required] string region)
+        public async Task<WoWTokenItem> GetTokenByRegion([FromRoute(Name = "region")][Required] WowRegion wowRegion)
         {
-            return await this.wowTokenManager.GetWoWTokenByRegion(region);
+            return await this.wowTokenManager.GetWoWTokenByRegion(wowRegion);
         }
         #endregion
     }

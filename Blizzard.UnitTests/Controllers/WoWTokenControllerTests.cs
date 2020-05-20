@@ -33,6 +33,7 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
         [Fact]
         public void WoWTokenController_Get_ReturnsGivenString()
         {
+            // TODO: Moq the manager response
             // Arrange
             const string testRegion = "test";
 
@@ -40,7 +41,7 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
             var response = this.controller.GetTokenByRegion(testRegion);
 
             // Assert
-            Assert.Equal(testRegion, response.Result);
+            Assert.Equal(testRegion, response.Result.Region);
         }
     }
 }

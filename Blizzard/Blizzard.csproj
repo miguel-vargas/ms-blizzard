@@ -6,7 +6,7 @@
     <AssemblyName>MigsTech.Blizzard</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <UserSecretsId>81bfd0df-1f26-4508-a8dd-dcd4a119138d</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>

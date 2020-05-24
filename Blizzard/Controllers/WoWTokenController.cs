@@ -40,7 +40,7 @@ namespace MigsTech.Blizzard.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("tokens", Name = "Get All WoW Tokens")]
-        public async Task<WoWTokenResponse> GetAllTokens()
+        public async Task<WoWTokenResponse> GetAllWoWTokens()
         {
             return await this.wowTokenManager.GetAllWoWTokens();
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MigsTech.Blizzard.BusinessLogic.Managers;
 using MigsTech.Blizzard.Controllers;
@@ -20,7 +19,7 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
         {
             this.wowTokenManager = new Mock<IWoWTokenManager>();
             var loggerMock = new Mock<ILogger<WoWTokenController>>();
-            this.controller = new WoWTokenController(wowTokenManager.Object, loggerMock.Object);
+            this.controller = new WoWTokenController(this.wowTokenManager.Object, loggerMock.Object);
         }
 
         [Fact]

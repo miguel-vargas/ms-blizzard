@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard", "Blizzard\Blizza
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard.UnitTests", "Blizzard.UnitTests\Blizzard.UnitTests.csproj", "{D7206D3A-7423-4EEF-8CC1-F576B33C96FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blizzard.BusinessLogic", "Blizzard.BusinessLogic\Blizzard.BusinessLogic.csproj", "{834E401F-3CC0-4811-A30A-AB1E9C19B7BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard.BusinessLogic", "Blizzard.BusinessLogic\Blizzard.BusinessLogic.csproj", "{834E401F-3CC0-4811-A30A-AB1E9C19B7BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blizzard.Data", "Blizzard.Data\Blizzard.Data.csproj", "{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard.Data", "Blizzard.Data\Blizzard.Data.csproj", "{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blizzard.BusinessLogic.UnitTests", "Blizzard.BusinessLogic.UnitTests\Blizzard.BusinessLogic.UnitTests.csproj", "{30570A08-CF87-4808-9175-EA7508458045}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MigsTech.Blizzard.Data.Models;
 using MigsTech.Blizzard.Data.Services;
 
@@ -11,6 +12,7 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
     {
         #region Fields and Properties
         private readonly IWoWTokenService wowTokenService;
+        private readonly ILogger<WoWTokenManager> logger;
         #endregion
 
         #region Constructors
@@ -18,9 +20,12 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
         /// <summary>
         /// Initializes a new instance of the <see cref="WoWTokenManager"/> class.
         /// </summary>
-        public WoWTokenManager(IWoWTokenService wowTokenService)
+        /// <param name="wowTokenService">The WoW Token Service.</param>
+        /// <param name="logger">The logger</param>
+        public WoWTokenManager(IWoWTokenService wowTokenService, ILogger<WoWTokenManager> logger)
         {
             this.wowTokenService = wowTokenService;
+            this.logger = logger;
         }
         #endregion
 

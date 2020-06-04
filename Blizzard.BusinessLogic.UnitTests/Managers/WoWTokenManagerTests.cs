@@ -23,7 +23,7 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
         }
 
         [Fact]
-        public void WoWTokenController_GetAllWoWTokens_ReturnsTypeWoWTokenResponse()
+        public void WoWTokenManager_GetAllWoWTokens_ReturnsTypeWoWTokenResponse()
         {
             // Arrange
             this.wowTokenService.Setup(m => m.GetAllWoWTokens()).ReturnsAsync(new WoWTokenResponse(new []{ new WoWTokenItem(), }));
@@ -36,7 +36,7 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
         }
 
         [Fact]
-        public void WoWTokenController_GetAllWoWTokens_ReturnsWoWTokenTokenItem()
+        public void WoWTokenManager_GetAllWoWTokens_ReturnsWoWTokenTokenItem()
         {
             // Arrange
             const WowRegion region = WowRegion.Us;
@@ -61,7 +61,7 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
         }
 
         [Fact]
-        public void WoWTokenController_GetWoWTokenByRegion_ReturnsTypeWoWTokenItem()
+        public void WoWTokenManager_GetWoWTokenByRegion_ReturnsTypeWoWTokenItem()
         {
             // Arrange
             this.wowTokenService.Setup(m => m.GetWoWTokenByRegion(It.IsAny<WowRegion>())).ReturnsAsync(new WoWTokenItem());
@@ -74,7 +74,7 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
         }
 
         [Fact]
-        public void WoWTokenController_GetWoWTokenByRegion_ReturnsWoWTokenTokenItem()
+        public void WoWTokenManager_GetWoWTokenByRegion_ReturnsWoWTokenTokenItem()
         {
             // Arrange
             const WowRegion region = WowRegion.Us;

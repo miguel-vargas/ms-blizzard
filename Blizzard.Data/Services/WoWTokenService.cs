@@ -47,7 +47,7 @@ namespace MigsTech.Blizzard.Data.Services
         /// <returns></returns>
         public async Task<WoWTokenResponse> GetAllWoWTokens()
         {
-            var token = await this.authService.GetToken();
+            var token = await this.authService.GetAuthToken();
 
             this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
@@ -80,7 +80,7 @@ namespace MigsTech.Blizzard.Data.Services
         /// <returns></returns>
         public async Task<WoWTokenItem> GetWoWTokenByRegion(WowRegion wowRegion)
         {
-            var token = await this.authService.GetToken();
+            var token = await this.authService.GetAuthToken();
 
             this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 

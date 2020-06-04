@@ -11,12 +11,6 @@ namespace MigsTech.Blizzard.Data.Services
         /// Gets access token if current one is expired.
         /// </summary>
         /// <returns></returns>
-        Task<string> GetToken();
-
-        /// <summary>
-        /// Checks if current token is valid.
-        /// </summary>
-        /// <returns></returns>
-        bool IsTokenValid();
+        Task<string> GetAuthToken();
     }
 }

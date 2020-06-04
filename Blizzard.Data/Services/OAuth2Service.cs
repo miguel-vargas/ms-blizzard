@@ -37,9 +37,9 @@ namespace MigsTech.Blizzard.Data.Services
         /// Gets access token if current one is expired.
         /// </summary>
         /// <returns></returns>
-        public async Task<string> GetToken()
+        public async Task<string> GetAuthToken()
         {
-            if (IsTokenValid())
+            if (this.IsTokenValid())
             {
                 return this.token;
             }
@@ -66,7 +66,7 @@ namespace MigsTech.Blizzard.Data.Services
         /// Checks if current token is valid.
         /// </summary>
         /// <returns></returns>
-        public bool IsTokenValid()
+        private bool IsTokenValid()
         {
             if (token == null)
             {

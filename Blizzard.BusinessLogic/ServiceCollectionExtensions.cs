@@ -21,9 +21,9 @@ namespace MigsTech.Blizzard.BusinessLogic
         /// <param name="configuration">The configuration.</param>
         public static void AddTokenBusinessLogic(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IWoWTokenManager, WoWTokenManager>();
-            services.AddScoped<IWoWTokenService, WoWTokenService>();
-            services.AddScoped<IHttpService, HttpService>();
+            services.AddSingleton<IWoWTokenManager, WoWTokenManager>();
+            services.AddSingleton<IWoWTokenService, WoWTokenService>();
+            services.AddSingleton<IHttpService, HttpService>();
 
             services.AddOAuth2ServiceClient(configuration);
         }

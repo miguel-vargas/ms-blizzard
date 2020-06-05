@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,6 +13,7 @@ namespace MigsTech.Blizzard.BusinessLogic
     /// <summary>
     /// <see cref="IServiceCollection"/> Extensions for Entitlement Business Logic.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class ServiceCollectionExtensions
     {
         /// <summary>

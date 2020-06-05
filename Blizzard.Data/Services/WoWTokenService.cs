@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MigsTech.Blizzard.Data.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace MigsTech.Blizzard.Data.Services
 {
@@ -20,8 +17,7 @@ namespace MigsTech.Blizzard.Data.Services
         internal const string ChineseUriPattern = "https://gateway.battlenet.com.{0}/data/wow/token/index";
         internal const string NamespacePattern = "namespace=dynamic-{0}";
 
-        private readonly HttpClient client;
-        private readonly IOAuth2Service authService;
+        private readonly IHttpService httpService;
         private readonly ILogger<WoWTokenService> logger;
         #endregion
 
@@ -29,13 +25,11 @@ namespace MigsTech.Blizzard.Data.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="WoWTokenService"/> class.
         /// </summary>
-        /// <param name="client">The client.</param>
-        /// <param name="authService">The auth service.</param>
+        /// <param name="httpService">The HTTP Service.</param>
         /// <param name="logger">The logger</param>
-        public WoWTokenService(HttpClient client, IOAuth2Service authService, ILogger<WoWTokenService> logger)
+        public WoWTokenService(IHttpService httpService, ILogger<WoWTokenService> logger)
         {
-            this.client = client;
-            this.authService = authService;
+            this.httpService = httpService;
             this.logger = logger;
         }
         #endregion
@@ -46,11 +40,7 @@ namespace MigsTech.Blizzard.Data.Services
         /// </summary>
         /// <returns></returns>
         public async Task<WoWTokenResponse> GetAllWoWTokens()
-        {
-            var token = await this.authService.GetAuthToken();
-
-            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+        { 
             var wowTokens = new List<WoWTokenItem>();
 
             foreach (var wowRegion in Enum.GetValues(typeof(WowRegion)))
@@ -59,7 +49,7 @@ namespace MigsTech.Blizzard.Data.Services
 
                 var uri = BuildUriStringWithRegionQuery(region);
 
-                var response = await client.GetAsync(uri);
+                var response = await httpService.GetRequestAsync(uri);
 
                 var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
 
@@ -77,16 +67,12 @@ namespace MigsTech.Blizzard.Data.Services
         /// <param name="wowRegion">The region.</param>
         /// <returns></returns>
         public async Task<WoWTokenItem> GetWoWTokenByRegion(WowRegion wowRegion)
-        {
-            var token = await this.authService.GetAuthToken();
-
-            this.client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
+        { 
             var region = Enum.GetName(typeof(WowRegion), wowRegion)?.ToLower();
 
             var uri = BuildUriStringWithRegionQuery(region);
 
-            var response = await client.GetAsync(uri);
+            var response = await httpService.GetRequestAsync(uri);
 
             var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
 

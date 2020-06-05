@@ -21,11 +21,11 @@ namespace MigsTech.Blizzard.BusinessLogic
         /// <param name="configuration">The configuration.</param>
         public static void AddTokenBusinessLogic(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IWoWTokenManager, WoWTokenManager>();
+            services.AddScoped<IWoWTokenManager, WoWTokenManager>();
+            services.AddScoped<IWoWTokenService, WoWTokenService>();
+            services.AddScoped<IHttpService, HttpService>();
 
             services.AddOAuth2ServiceClient(configuration);
-
-            services.AddWoWTokenServiceClient(configuration);
         }
 
         /// <summary>
@@ -49,20 +49,6 @@ namespace MigsTech.Blizzard.BusinessLogic
             };
 
             services.AddHttpClient<IOAuth2Service, OAuth2Service>(configure);
-        }
-
-        /// <summary>
-        /// Registers all of the dependencies into the service collection
-        /// for the WoW Token service client.
-        /// </summary>
-        /// <param name="services">The services.</param>
-        /// <param name="configuration">The configuration.</param>
-        public static void AddWoWTokenServiceClient(this IServiceCollection services, IConfiguration configuration)
-        {
-            Action<HttpClient> configure = (HttpClient client) =>
-            { };
-
-            services.AddHttpClient<IWoWTokenService, WoWTokenService>(configure);
         }
     }
 }

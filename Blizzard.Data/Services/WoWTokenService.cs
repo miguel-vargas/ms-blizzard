@@ -59,9 +59,7 @@ namespace MigsTech.Blizzard.Data.Services
 
                 var uri = BuildUriStringWithRegionQuery(region);
 
-                var request = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
-
-                var response = await client.SendAsync(request);
+                var response = await client.GetAsync(uri);
 
                 var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
 
@@ -88,9 +86,7 @@ namespace MigsTech.Blizzard.Data.Services
 
             var uri = BuildUriStringWithRegionQuery(region);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, new Uri(uri));
-
-            var response = await client.SendAsync(request);
+            var response = await client.GetAsync(uri);
 
             var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
 

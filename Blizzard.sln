@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard", "Blizzard\Blizzard.csproj", "{C23B3087-9949-4E97-BCF5-79D2B4E751AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard.UnitTests", "Blizzard.UnitTests\Blizzard.UnitTests.csproj", "{D7206D3A-7423-4EEF-8CC1-F576B33C96FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard.BusinessLogic", "Blizzard.BusinessLogic\Blizzard.BusinessLogic.csproj", "{834E401F-3CC0-4811-A30A-AB1E9C19B7BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard.Data", "Blizzard.Data\Blizzard.Data.csproj", "{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blizzard.BusinessLogic.UnitTests", "Blizzard.BusinessLogic.UnitTests\Blizzard.BusinessLogic.UnitTests.csproj", "{30570A08-CF87-4808-9175-EA7508458045}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blizzard.Data.UnitTests", "Blizzard.Data.UnitTests\Blizzard.Data.UnitTests.csproj", "{8361A138-C802-4529-96AD-D17755F0C1DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C23B3087-9949-4E97-BCF5-79D2B4E751AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C23B3087-9949-4E97-BCF5-79D2B4E751AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C23B3087-9949-4E97-BCF5-79D2B4E751AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C23B3087-9949-4E97-BCF5-79D2B4E751AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7206D3A-7423-4EEF-8CC1-F576B33C96FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7206D3A-7423-4EEF-8CC1-F576B33C96FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7206D3A-7423-4EEF-8CC1-F576B33C96FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7206D3A-7423-4EEF-8CC1-F576B33C96FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{834E401F-3CC0-4811-A30A-AB1E9C19B7BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{834E401F-3CC0-4811-A30A-AB1E9C19B7BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{834E401F-3CC0-4811-A30A-AB1E9C19B7BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{834E401F-3CC0-4811-A30A-AB1E9C19B7BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD57A507-4EC2-4D18-BC51-96A984EBA4AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30570A08-CF87-4808-9175-EA7508458045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8361A138-C802-4529-96AD-D17755F0C1DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8361A138-C802-4529-96AD-D17755F0C1DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8361A138-C802-4529-96AD-D17755F0C1DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8361A138-C802-4529-96AD-D17755F0C1DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {745E2AD2-49CE-4DAD-801E-EF5A9AEB6F40}
+	EndGlobalSection
+EndGlobal

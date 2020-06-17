@@ -11,20 +11,25 @@ namespace MigsTech.Blizzard.Data.UnitTests.Services
 {
     public class OAuth2ServiceTests
     {
+        #region Fields and Properties
         internal const string DefaultAuthResponse = @"{ 'expires_in': 86399, 'access_token': '12345' }";
 
         private readonly MockHttpMessageHandler handler;
         private readonly Mock<ILogger<OAuth2Service>> logger;
-        private readonly OAuth2Service service;
+        private readonly OAuth2Service service; 
+        #endregion
 
+        #region Constructors
         public OAuth2ServiceTests()
         {
             this.handler = new MockHttpMessageHandler();
             this.logger = new Mock<ILogger<OAuth2Service>>();
 
             this.service = new OAuth2Service(new HttpClient(this.handler), logger.Object);
-        }
+        } 
+        #endregion
 
+        #region Tests
         [Fact]
         public void OAuth2Service_GetAuthToken_ReturnsTypeString()
         {
@@ -91,7 +96,7 @@ namespace MigsTech.Blizzard.Data.UnitTests.Services
             this.handler
                 .Expect(HttpMethod.Post, OAuth2Service.BlizzardAuthUri)
                 .Respond(HttpStatusCode.OK, "application/json", tokenExpiredAuthResponse);
-            
+
             await this.service.GetAuthToken();
 
             this.handler
@@ -104,6 +109,7 @@ namespace MigsTech.Blizzard.Data.UnitTests.Services
             // Assert
             Assert.Equal(expectedToken, response);
             this.handler.VerifyNoOutstandingExpectation();
-        }
+        } 
+        #endregion
     }
 }

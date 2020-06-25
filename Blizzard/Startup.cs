@@ -40,11 +40,22 @@ namespace MigsTech.Blizzard
         /// <param name="services">The service collection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "corsPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    });
+            });
+
             services
                 .AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
-                    options.SerializerSettings.ContractResolver = new DefaultContractResolver() { NamingStrategy = new SnakeCaseNamingStrategy() };
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver() { NamingStrategy = new CamelCaseNamingStrategy() };
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 });
@@ -100,13 +111,15 @@ namespace MigsTech.Blizzard
 
             app.UseRouting();
 
+            app.UseCors("corsPolicy");
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-        } 
+        }
         #endregion
     }
 }

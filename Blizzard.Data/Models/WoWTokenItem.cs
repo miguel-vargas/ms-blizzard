@@ -6,7 +6,6 @@ namespace MigsTech.Blizzard.Data.Models
     /// <summary>
     /// Represents a wow token item.
     /// </summary>
-    [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
     public class WoWTokenItem
     {
         #region Fields and Properties

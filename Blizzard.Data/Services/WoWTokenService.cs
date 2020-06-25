@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using MigsTech.Blizzard.Data.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace MigsTech.Blizzard.Data.Services
 {
@@ -40,10 +41,20 @@ namespace MigsTech.Blizzard.Data.Services
         /// </summary>
         /// <returns></returns>
         public async Task<WoWTokenResponse> GetAllWoWTokens()
-        { 
+        {
+            var deserializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            };
+
             var wowTokens = new List<WoWTokenItem>();
 
-            foreach (var wowRegion in Enum.GetValues(typeof(WowRegion)))
+            var wowRegions = Enum.GetValues(typeof(WowRegion));
+
+            foreach (var wowRegion in wowRegions)
             {
                 var region = Enum.GetName(typeof(WowRegion), wowRegion)?.ToLower();
 
@@ -51,9 +62,12 @@ namespace MigsTech.Blizzard.Data.Services
 
                 var response = await httpService.GetRequestAsync(uri);
 
-                var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
+                var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync(), deserializerSettings);
 
-                wowTokenItem.Region = region;
+                if (wowTokenItem != null)
+                {
+                    wowTokenItem.Region = region;
+                }
 
                 wowTokens.Add(wowTokenItem);
             }
@@ -67,16 +81,27 @@ namespace MigsTech.Blizzard.Data.Services
         /// <param name="wowRegion">The region.</param>
         /// <returns></returns>
         public async Task<WoWTokenItem> GetWoWTokenByRegion(WowRegion wowRegion)
-        { 
+        {
+            var deserializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                }
+            };
+
             var region = Enum.GetName(typeof(WowRegion), wowRegion)?.ToLower();
 
             var uri = BuildUriStringWithRegionQuery(region);
 
             var response = await httpService.GetRequestAsync(uri);
 
-            var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync());
+            var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync(), deserializerSettings);
 
-            wowTokenItem.Region = region;
+            if (wowTokenItem != null)
+            {
+                wowTokenItem.Region = region;
+            }
 
             return wowTokenItem;
         }

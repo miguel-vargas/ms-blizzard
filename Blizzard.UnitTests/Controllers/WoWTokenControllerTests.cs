@@ -67,7 +67,7 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
             this.wowTokenManager.Setup(m => m.GetWoWTokenByRegion(It.IsAny<WowRegion>())).ReturnsAsync(new WoWTokenItem());
 
             // Act
-            var response = this.controller.GetTokenByRegion(WowRegion.Us);
+            var response = this.controller.GetTokenByRegion(WowRegion.Eu);
 
             // Assert
             Assert.IsAssignableFrom<WoWTokenItem>(response.Result);
@@ -77,7 +77,7 @@ namespace MigsTech.Blizzard.UnitTests.Controllers
         public void WoWTokenController_GetWoWTokenByRegion_ReturnsWoWTokenTokenItem()
         {
             // Arrange
-            const WowRegion region = WowRegion.Us;
+            const WowRegion region = WowRegion.Tw;
 
             var expectedToken = new WoWTokenItem()
             {

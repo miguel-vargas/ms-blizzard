@@ -38,7 +38,7 @@ namespace MigsTech.Blizzard.BusinessLogic
         /// <param name="configuration">The configuration.</param>
         public static void AddOAuth2ServiceClient(this IServiceCollection services, IConfiguration configuration)
         {
-            Action<HttpClient> configure = (HttpClient client) =>
+            Action<HttpClient> httpClientConfig = (HttpClient client) =>
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                     "Basic",
@@ -50,7 +50,8 @@ namespace MigsTech.Blizzard.BusinessLogic
                 );
             };
 
-            services.AddHttpClient<IOAuth2Service, OAuth2Service>(configure);
+            services.AddHttpClient<IOAuth2Service, OAuth2Service>()
+                .ConfigureHttpClient(httpClientConfig);
         }
     }
 }

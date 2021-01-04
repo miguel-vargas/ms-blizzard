@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using MigsTech.Blizzard.BusinessLogic.Managers;
 using MigsTech.Blizzard.Data.Models;
 using MigsTech.Blizzard.Data.Services;
@@ -12,27 +12,26 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
 {
     public class WoWTokenManagerTests
     {
-        private readonly Mock<IWoWTokenService> wowTokenService;
-        private readonly WoWTokenManager manager;
+        private readonly Mock<IWoWTokenService> _wowTokenService;
+        private readonly WoWTokenManager _manager;
 
         public WoWTokenManagerTests()
         {
-            this.wowTokenService = new Mock<IWoWTokenService>();
-            var loggerMock = new Mock<ILogger<WoWTokenManager>>();
-            this.manager = new WoWTokenManager(this.wowTokenService.Object, loggerMock.Object);
+            _wowTokenService = new Mock<IWoWTokenService>();
+            _manager = new WoWTokenManager(NullLogger<WoWTokenManager>.Instance, _wowTokenService.Object);
         }
 
         [Fact]
-        public void WoWTokenManager_GetAllWoWTokens_ReturnsTypeWoWTokenResponse()
+        public void WoWTokenManager_GetAllWoWTokens_CallsGetAllWoWTokens()
         {
             // Arrange
-            this.wowTokenService.Setup(m => m.GetAllWoWTokens()).ReturnsAsync(new WoWTokenResponse(new []{ new WoWTokenItem(), }));
+            _wowTokenService.Setup(m => m.GetAllWoWTokens()).ReturnsAsync(new WoWTokenResponse(new []{ new WoWTokenItem(), }));
 
             // Act
-            var response = this.manager.GetAllWoWTokens();
+            var response = _manager.GetAllWoWTokens();
 
             // Assert
-            Assert.IsAssignableFrom<WoWTokenResponse>(response.Result);
+            _wowTokenService.Verify(x => x.GetAllWoWTokens(), Times.Once);
         }
 
         [Fact]
@@ -48,10 +47,10 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
                 Region = region.ToString()
             };
 
-            this.wowTokenService.Setup(m => m.GetAllWoWTokens()).ReturnsAsync(new WoWTokenResponse(new[] { expectedToken, }));
+            _wowTokenService.Setup(m => m.GetAllWoWTokens()).ReturnsAsync(new WoWTokenResponse(new[] { expectedToken, }));
 
             // Act
-            var response = this.manager.GetAllWoWTokens();
+            var response = _manager.GetAllWoWTokens();
 
             // Assert
             var actualToken = response.Result.WowTokens.ToList().First();
@@ -61,16 +60,20 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
         }
 
         [Fact]
-        public void WoWTokenManager_GetWoWTokenByRegion_ReturnsTypeWoWTokenItem()
+        public void WoWTokenManager_GetWoWTokenByRegion_CallsGetWoWTokenByRegion()
         {
             // Arrange
-            this.wowTokenService.Setup(m => m.GetWoWTokenByRegion(It.IsAny<WowRegion>())).ReturnsAsync(new WoWTokenItem());
+            _wowTokenService
+                .Setup(m => m.GetWoWTokenByRegion(
+                    It.Is<WowRegion>(x => x == WowRegion.Us)))
+                .ReturnsAsync(new WoWTokenItem());
 
             // Act
-            var response = this.manager.GetWoWTokenByRegion(WowRegion.Us);
+            var response = _manager.GetWoWTokenByRegion(WowRegion.Us);
 
             // Assert
-            Assert.IsAssignableFrom<WoWTokenItem>(response.Result);
+            _wowTokenService
+                .Verify(x => x.GetWoWTokenByRegion(It.Is<WowRegion>(x => x == WowRegion.Us)), Times.Once);
         }
 
         [Fact]
@@ -86,10 +89,10 @@ namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Managers
                 Region = region.ToString()
             };
 
-            this.wowTokenService.Setup(m => m.GetWoWTokenByRegion(It.IsAny<WowRegion>())).ReturnsAsync(expectedToken);
+            _wowTokenService.Setup(m => m.GetWoWTokenByRegion(It.IsAny<WowRegion>())).ReturnsAsync(expectedToken);
 
             // Act
-            var response = this.manager.GetWoWTokenByRegion(region);
+            var response = _manager.GetWoWTokenByRegion(region);
 
             // Assert
             Assert.Equal(expectedToken.LastUpdatedTimestamp, response.Result.LastUpdatedTimestamp);

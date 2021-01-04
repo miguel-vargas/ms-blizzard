@@ -11,8 +11,8 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
     public class WoWTokenManager : IWoWTokenManager
     {
         #region Fields and Properties
-        private readonly IWoWTokenService wowTokenService;
-        private readonly ILogger<WoWTokenManager> logger;
+        private readonly ILogger _logger;
+        private readonly IWoWTokenService _wowTokenService;
         #endregion
 
         #region Constructors
@@ -20,12 +20,14 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
         /// <summary>
         /// Initializes a new instance of the <see cref="WoWTokenManager"/> class.
         /// </summary>
-        /// <param name="wowTokenService">The WoW Token Service.</param>
         /// <param name="logger">The logger</param>
-        public WoWTokenManager(IWoWTokenService wowTokenService, ILogger<WoWTokenManager> logger)
+        /// <param name="wowTokenService">The WoW Token Service.</param>
+        public WoWTokenManager(
+            ILogger<WoWTokenManager> logger,
+            IWoWTokenService wowTokenService)
         {
-            this.wowTokenService = wowTokenService;
-            this.logger = logger;
+            _logger = logger;
+            _wowTokenService = wowTokenService;
         }
         #endregion
 
@@ -36,7 +38,8 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
         /// <returns></returns>
         public async Task<WoWTokenResponse> GetAllWoWTokens()
         {
-            return await this.wowTokenService.GetAllWoWTokens();
+            _logger.LogInformation($"Retrieving WoW Token data from all regions");
+            return await _wowTokenService.GetAllWoWTokens();
         }
 
         /// <summary>
@@ -46,7 +49,8 @@ namespace MigsTech.Blizzard.BusinessLogic.Managers
         /// <returns></returns>
         public async Task<WoWTokenItem> GetWoWTokenByRegion(WowRegion wowRegion)
         {
-            return await this.wowTokenService.GetWoWTokenByRegion(wowRegion);
+            _logger.LogInformation($"Retrieving WoW Token data from {wowRegion}");
+            return await _wowTokenService.GetWoWTokenByRegion(wowRegion);
         }
         #endregion
     }

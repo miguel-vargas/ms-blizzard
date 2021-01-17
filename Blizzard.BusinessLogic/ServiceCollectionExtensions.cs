@@ -36,7 +36,7 @@ namespace MigsTech.Blizzard.BusinessLogic
         /// </summary>
         /// <param name="services">The services.</param>
         /// <param name="configuration">The configuration.</param>
-        public static void AddOAuth2ServiceClient(this IServiceCollection services, IConfiguration configuration)
+        private static void AddOAuth2ServiceClient(this IServiceCollection services, IConfiguration configuration)
         {
             Action<HttpClient> httpClientConfig = (HttpClient client) =>
             {

@@ -1,12 +1,8 @@
-using System;
-using System.IO;
-using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using MigsTech.Blizzard.BusinessLogic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -19,7 +15,7 @@ namespace MigsTech.Blizzard
     public class Startup
     {
         #region Fields and Properties
-        private readonly IConfiguration configuration;
+        private readonly IConfiguration _configuration;
         #endregion
 
         #region Constructors
@@ -29,7 +25,7 @@ namespace MigsTech.Blizzard
         /// <param name="configuration">The configuration.</param>
         public Startup(IConfiguration configuration)
         {
-            this.configuration = configuration;
+            _configuration = configuration;
         }
         #endregion
 
@@ -40,17 +36,6 @@ namespace MigsTech.Blizzard
         /// <param name="services">The service collection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: "corsPolicy",
-                    builder =>
-                    {
-                        builder.WithOrigins("http://localhost:4200")
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
-                    });
-            });
-
             services
                 .AddControllers()
                 .AddNewtonsoftJson(options =>
@@ -60,26 +45,7 @@ namespace MigsTech.Blizzard
                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Migs Tech Blizzard API", Version = "v1" });
-
-                // Only include Controllers and their Actions that have a defined group name
-                c.DocInclusionPredicate((_, controller) => !string.IsNullOrWhiteSpace(controller.GroupName));
-
-                // Rather than grouping Actions by their Controllers, we group Actions by the group name of the controller.
-                // If two separate controller files have similar business logic, we can give the two controllers the same
-                // group name and Swagger will group the Actions in those two controllers together.
-                c.TagActionsBy(controller => new[] { controller.GroupName });
-
-                // Include the xml comments generated at build time for each Controller/Action
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
-            });
-
-            services.AddSwaggerGenNewtonsoftSupport();
-
-            services.AddTokenBusinessLogic(this.configuration);
+            services.AddMigsTechServices(_configuration);
         }
 
         /// <summary>
@@ -114,6 +80,7 @@ namespace MigsTech.Blizzard
             app.UseCors("corsPolicy");
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

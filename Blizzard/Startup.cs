@@ -60,6 +60,21 @@ namespace MigsTech.Blizzard
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseCors("corsPolicy");
+
+            app.UseAuthentication();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
             // Use static files so we can inject custom css for our Swagger UI
             app.UseStaticFiles();
 
@@ -71,20 +86,8 @@ namespace MigsTech.Blizzard
                 c.RoutePrefix = string.Empty;
                 c.EnableDeepLinking();
                 c.InjectStylesheet("/swagger-ui/BlizzardAPISwagger.css");
-            });
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseCors("corsPolicy");
-
-            app.UseAuthorization();
-            app.UseAuthentication();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
+                c.OAuthClientId(_configuration["AzureAd:ClientId"]);
             });
         }
         #endregion

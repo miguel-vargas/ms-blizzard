@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MigsTech.Blizzard.BusinessLogic.Managers;
@@ -11,6 +12,7 @@ namespace MigsTech.Blizzard.Controllers
     /// The controller for getting WoW Tokens.
     /// </summary>
     [ApiController]
+    [Authorize]
     [Route("~/wow")]
     [Produces("application/json")]
     [ApiExplorerSettings(GroupName = "WoW Token")]

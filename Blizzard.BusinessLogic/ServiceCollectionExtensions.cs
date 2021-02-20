@@ -37,14 +37,18 @@ namespace MigsTech.Blizzard.BusinessLogic
         public static void AddMigsTechServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AzureADSettings>(options => configuration.GetSection(AzureADSettings.AzureADSettingsKey).Bind(options));
+            services.Configure<BlizzardOAuthSettings>(options => configuration.GetSection(BlizzardOAuthSettings.BlizzardSettingsKey).Bind(options));
 
             var sp = services.BuildServiceProvider();
 
-            var azureAdConfig = sp.GetService<IOptions<AzureADSettings>>().Value;
+            var azureAdSettings = sp.GetService<IOptions<AzureADSettings>>().Value;
+            var blizzardOAuthSettings = sp.GetService<IOptions<BlizzardOAuthSettings>>().Value;
 
             services.AddCorsPolicies();
 
-            services.AddAuthenticationPolicies(azureAdConfig);
+            services.AddSwagger(azureAdSettings);
+
+            services.AddAuthenticationPolicies(azureAdSettings);
 
             services.AddSwaggerGenNewtonsoftSupport();
 
@@ -69,25 +73,8 @@ namespace MigsTech.Blizzard.BusinessLogic
             });
         }
 
-        private static void AddAuthenticationPolicies(this IServiceCollection services, AzureADSettings azureAdConfig)
+        private static void AddSwagger(this IServiceCollection services, AzureADSettings azureAdSettings)
         {
-            services
-                .AddAuthentication(sharedOptions =>
-                {
-                    sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    // Authority will be Your AzureAd Instance and Tenant Id
-                    options.Authority = $"{azureAdConfig.Instance}{azureAdConfig.TenantId}/v2.0";
-
-                    // The valid audiences are both the Client ID(options.Audience) and api://{ClientID}
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidAudiences = new string[] { azureAdConfig.ClientId, $"api://{azureAdConfig.ClientId}" }
-                    };
-                });
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Migs Tech Blizzard API", Version = "v1" });
@@ -118,10 +105,10 @@ namespace MigsTech.Blizzard.BusinessLogic
                         {
                             Scopes = new Dictionary<string, string>
                             {
-                                { string.Format(ScopeNamePattern, azureAdConfig.ClientId, azureAdConfig.Scope), azureAdConfig.AdminConsentName }
+                                { string.Format(ScopeNamePattern, azureAdSettings.ClientId, azureAdSettings.Scope), azureAdSettings.AdminConsentName }
                             },
-                            AuthorizationUrl = new Uri(string.Format(AuthorizeUrlPattern, azureAdConfig.Instance, azureAdConfig.TenantId)),
-                            TokenUrl = new Uri(string.Format(TokenUrlPattern, azureAdConfig.Instance, azureAdConfig.TenantId))
+                            AuthorizationUrl = new Uri(string.Format(AuthorizeUrlPattern, azureAdSettings.Instance, azureAdSettings.TenantId)),
+                            TokenUrl = new Uri(string.Format(TokenUrlPattern, azureAdSettings.Instance, azureAdSettings.TenantId))
                         }
                     }
                 });
@@ -141,6 +128,26 @@ namespace MigsTech.Blizzard.BusinessLogic
                     }
                 });
             });
+        }
+
+        private static void AddAuthenticationPolicies(this IServiceCollection services, AzureADSettings azureAdSettings)
+        {
+            services
+                .AddAuthentication(sharedOptions =>
+                {
+                    sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    // Authority will be Your AzureAd Instance and Tenant Id
+                    options.Authority = $"{azureAdSettings.Instance}{azureAdSettings.TenantId}/v2.0";
+
+                    // The valid audiences are both the Client ID(options.Audience) and api://{ClientID}
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidAudiences = new string[] { azureAdSettings.ClientId, $"api://{azureAdSettings.ClientId}" }
+                    };
+                });
         }
 
         /// <summary>

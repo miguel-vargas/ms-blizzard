@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MigsTech.Blizzard.BusinessLogic.Services
@@ -19,20 +20,20 @@ namespace MigsTech.Blizzard.BusinessLogic.Services
         internal const string ChineseUriPattern = "https://gateway.battlenet.com.{0}/data/wow/token/index";
         internal const string NamespacePattern = "namespace=dynamic-{0}";
 
-        private readonly IHttpService httpService;
-        private readonly ILogger<WoWTokenService> logger;
+        private readonly HttpClient _client;
+        private readonly ILogger _logger;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Initializes a new instance of the <see cref="WoWTokenService"/> class.
         /// </summary>
-        /// <param name="httpService">The HTTP Service.</param>
+        /// <param name="client">The HTTP client.</param>
         /// <param name="logger">The logger</param>
-        public WoWTokenService(IHttpService httpService, ILogger<WoWTokenService> logger)
+        public WoWTokenService(HttpClient client, ILogger<WoWTokenService> logger)
         {
-            this.httpService = httpService;
-            this.logger = logger;
+            _client = client;
+            _logger = logger;
         }
         #endregion
 
@@ -61,7 +62,7 @@ namespace MigsTech.Blizzard.BusinessLogic.Services
 
                 var uri = BuildUriStringWithRegionQuery(region);
 
-                var response = await httpService.GetRequestAsync(uri);
+                var response = await _client.GetAsync(uri);
 
                 var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync(), deserializerSettings);
 
@@ -95,7 +96,7 @@ namespace MigsTech.Blizzard.BusinessLogic.Services
 
             var uri = BuildUriStringWithRegionQuery(region);
 
-            var response = await httpService.GetRequestAsync(uri);
+            var response = await _client.GetAsync(uri);
 
             var wowTokenItem = JsonConvert.DeserializeObject<WoWTokenItem>(await response.Content.ReadAsStringAsync(), deserializerSettings);
 

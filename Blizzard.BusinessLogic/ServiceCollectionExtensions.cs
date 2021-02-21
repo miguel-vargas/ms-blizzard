@@ -54,11 +54,9 @@ namespace MigsTech.Blizzard.BusinessLogic
 
             services.AddSwaggerGenNewtonsoftSupport();
 
-            services.AddSingleton<IWoWTokenManager, WoWTokenManager>();
-            services.AddSingleton<IWoWTokenService, WoWTokenService>();
-            services.AddSingleton<IHttpService, HttpService>();
+            services.AddScoped<IWoWTokenManager, WoWTokenManager>();
 
-            services.AddOAuth2ServiceClient(blizzardOAuthSettings);
+            services.AddServiceClients(blizzardOAuthSettings);
         }
 
         private static void AddCorsPolicies(this IServiceCollection services)
@@ -158,7 +156,7 @@ namespace MigsTech.Blizzard.BusinessLogic
         /// <param name="services"></param>
         /// <param name="blizzardSettings"></param>
         /// <returns></returns>
-        private static void AddOAuth2ServiceClient(this IServiceCollection services, BlizzardOAuthSettings blizzardSettings)
+        private static void AddServiceClients(this IServiceCollection services, BlizzardOAuthSettings blizzardSettings)
         {
             Action<HttpClient> httpClientConfig = (HttpClient client) =>
             {
@@ -173,7 +171,10 @@ namespace MigsTech.Blizzard.BusinessLogic
             services.AddHttpClient<IAuthService, AuthService>()
                 .ConfigureHttpClient(httpClientConfig);
 
-            //services.AddScoped<AuthHandler>();
+            services.AddScoped<AuthHandler>();
+
+            services.AddHttpClient<IWoWTokenService, WoWTokenService>()
+                .AddHttpMessageHandler<AuthHandler>();
         }
     }
 }

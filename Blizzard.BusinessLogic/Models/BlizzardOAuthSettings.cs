@@ -10,7 +10,7 @@
         /// <summary>
         /// Blizzard's Auth Endpoint.
         /// </summary>
-        public string AuthUri { get; set; }
+        public string BlizzardUri { get; set; }
 
         /// <summary>
         /// Client Id.

@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MigsTech.Blizzard.BusinessLogic.Handlers;
 using MigsTech.Blizzard.BusinessLogic.Managers;
+using MigsTech.Blizzard.BusinessLogic.Managers.Interfaces;
 using MigsTech.Blizzard.BusinessLogic.Models;
 using MigsTech.Blizzard.BusinessLogic.Services;
 using MigsTech.Blizzard.BusinessLogic.Services.Interfaces;

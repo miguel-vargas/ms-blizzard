@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using MigsTech.Blizzard.BusinessLogic.Models;
+﻿using MigsTech.Blizzard.BusinessLogic.Models;
+using System.Threading.Tasks;
 
-namespace MigsTech.Blizzard.BusinessLogic.Managers
+namespace MigsTech.Blizzard.BusinessLogic.Managers.Interfaces
 {
     /// <summary>
     /// An interface for the WoW Token manager.

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using MigsTech.Blizzard.BusinessLogic.Managers.Interfaces;
 using MigsTech.Blizzard.BusinessLogic.Models;
 using MigsTech.Blizzard.BusinessLogic.Services.Interfaces;
 

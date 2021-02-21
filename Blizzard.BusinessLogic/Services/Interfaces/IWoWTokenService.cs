@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
-using MigsTech.Blizzard.Data.Models;
+﻿using MigsTech.Blizzard.BusinessLogic.Models;
+using System.Threading.Tasks;
 
-namespace MigsTech.Blizzard.Data.Services
+namespace MigsTech.Blizzard.BusinessLogic.Services.Interfaces
 {
     /// <summary>
     /// Represents the service which takes care of getting wow tokens from the Blizzard API.

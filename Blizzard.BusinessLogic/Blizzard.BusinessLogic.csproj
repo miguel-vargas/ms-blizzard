@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
@@ -15,10 +15,6 @@
 		<PackageReference Include="Microsoft.Identity.Web" Version="1.6.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.4" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.0.4" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\Blizzard.Data\Blizzard.Data.csproj" />
 	</ItemGroup>
 
 </Project>

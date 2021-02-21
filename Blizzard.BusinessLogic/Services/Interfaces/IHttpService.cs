@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MigsTech.Blizzard.Data.Services
+namespace MigsTech.Blizzard.BusinessLogic.Services.Interfaces
 {
     /// <summary>
     /// Wrapper for HTTP Client.

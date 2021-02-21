@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using MigsTech.Blizzard.Data.Models;
-using MigsTech.Blizzard.Data.Services;
+using MigsTech.Blizzard.BusinessLogic.Models;
+using MigsTech.Blizzard.BusinessLogic.Services.Interfaces;
 
 namespace MigsTech.Blizzard.BusinessLogic.Managers
 {

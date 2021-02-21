@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace MigsTech.Blizzard.Data.Models
+namespace MigsTech.Blizzard.BusinessLogic.Models
 {
     /// <summary>
     /// Regions available.

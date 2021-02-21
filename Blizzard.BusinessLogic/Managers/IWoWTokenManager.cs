@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using MigsTech.Blizzard.Data.Models;
+using MigsTech.Blizzard.BusinessLogic.Models;
 
 namespace MigsTech.Blizzard.BusinessLogic.Managers
 {

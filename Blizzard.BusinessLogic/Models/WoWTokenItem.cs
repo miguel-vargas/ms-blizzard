@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-
-namespace MigsTech.Blizzard.Data.Models
+﻿namespace MigsTech.Blizzard.BusinessLogic.Models
 {
     /// <summary>
     /// Represents a wow token item.
@@ -26,4 +23,3 @@ namespace MigsTech.Blizzard.Data.Models
         #endregion
     }
 }
-

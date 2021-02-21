@@ -12,9 +12,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MigsTech.Blizzard.BusinessLogic.Handlers;
 using MigsTech.Blizzard.BusinessLogic.Managers;
 using MigsTech.Blizzard.BusinessLogic.Models;
-using MigsTech.Blizzard.Data.Services;
+using MigsTech.Blizzard.BusinessLogic.Services;
+using MigsTech.Blizzard.BusinessLogic.Services.Interfaces;
 
 namespace MigsTech.Blizzard.BusinessLogic
 {
@@ -56,7 +58,7 @@ namespace MigsTech.Blizzard.BusinessLogic
             services.AddSingleton<IWoWTokenService, WoWTokenService>();
             services.AddSingleton<IHttpService, HttpService>();
 
-            services.AddOAuth2ServiceClient(configuration);
+            services.AddOAuth2ServiceClient(blizzardOAuthSettings);
         }
 
         private static void AddCorsPolicies(this IServiceCollection services)
@@ -151,23 +153,27 @@ namespace MigsTech.Blizzard.BusinessLogic
         }
 
         /// <summary>
-        /// Registers all of the dependencies into the service collection
-        /// for the OAuth2 service client.
+        /// Registers all services required to use Blizzard's OAuth.
         /// </summary>
-        /// <param name="services">The services.</param>
-        /// <param name="configuration">The configuration.</param>
-        private static void AddOAuth2ServiceClient(this IServiceCollection services, IConfiguration configuration)
+        /// <param name="services"></param>
+        /// <param name="blizzardSettings"></param>
+        /// <returns></returns>
+        private static void AddOAuth2ServiceClient(this IServiceCollection services, BlizzardOAuthSettings blizzardSettings)
         {
             Action<HttpClient> httpClientConfig = (HttpClient client) =>
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                     "Basic",
-                    Convert.ToBase64String(Encoding.ASCII.GetBytes($"{configuration["Blizzard:ClientId"]}:{configuration["Blizzard:ClientSecret"]}"))
+                    Convert.ToBase64String(Encoding.ASCII.GetBytes($"{blizzardSettings.ClientId}:{blizzardSettings.ClientSecret}"))
                 );
+
+                client.BaseAddress = new Uri(blizzardSettings.BlizzardUri);
             };
 
-            services.AddHttpClient<IOAuth2Service, OAuth2Service>()
+            services.AddHttpClient<IAuthService, AuthService>()
                 .ConfigureHttpClient(httpClientConfig);
+
+            //services.AddScoped<AuthHandler>();
         }
     }
 }

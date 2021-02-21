@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MigsTech.Blizzard.BusinessLogic.Managers;
-using MigsTech.Blizzard.Data.Models;
+using MigsTech.Blizzard.BusinessLogic.Models;
 
 namespace MigsTech.Blizzard.Controllers
 {

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using MigsTech.Blizzard.BusinessLogic.Services.Interfaces;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
-namespace MigsTech.Blizzard.Data.Services
+namespace MigsTech.Blizzard.BusinessLogic.Services
 {
     /// <inheritdoc cref="IHttpService"/>
     public class HttpService : IHttpService, IDisposable
@@ -13,8 +14,10 @@ namespace MigsTech.Blizzard.Data.Services
         /// <inheritdoc />
         public HttpClient HttpClient { get; set; }
 
-        private readonly IOAuth2Service authService;
-        private readonly ILogger<HttpService> logger;
+        public IAuthService AuthService => authService;
+
+        private readonly IAuthService authService;
+        private readonly ILogger logger;
         #endregion
 
         #region Constructors
@@ -23,7 +26,7 @@ namespace MigsTech.Blizzard.Data.Services
         /// </summary>
         /// <param name="authService">The Auth Service.</param>
         /// <param name="logger">The logger</param>
-        public HttpService(IOAuth2Service authService, ILogger<HttpService> logger)
+        public HttpService(IAuthService authService, ILogger<HttpService> logger)
         {
             this.HttpClient = new HttpClient();
 
@@ -54,7 +57,7 @@ namespace MigsTech.Blizzard.Data.Services
         /// <returns></returns>
         private async Task GetAndAppendAccessToken()
         {
-            var accessToken = await this.authService.GetAuthToken();
+            var accessToken = await this.AuthService.GetAuthTokenAsync();
             AppendToken(accessToken);
         }
 
@@ -71,7 +74,7 @@ namespace MigsTech.Blizzard.Data.Services
         public void Dispose()
         {
             HttpClient?.Dispose();
-        } 
+        }
         #endregion
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
-namespace MigsTech.Blizzard.Data.Models
+namespace MigsTech.Blizzard.BusinessLogic.Models
 {
     /// <summary>
     /// Represents a wow token response containing one or more wow token items.
@@ -28,4 +26,3 @@ namespace MigsTech.Blizzard.Data.Models
         #endregion
     }
 }
-

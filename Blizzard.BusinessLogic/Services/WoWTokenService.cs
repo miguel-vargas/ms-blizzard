@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using MigsTech.Blizzard.Data.Models;
+﻿using Microsoft.Extensions.Logging;
+using MigsTech.Blizzard.BusinessLogic.Models;
+using MigsTech.Blizzard.BusinessLogic.Services.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace MigsTech.Blizzard.Data.Services
+namespace MigsTech.Blizzard.BusinessLogic.Services
 {
     /// <summary>
     /// Represents the service which takes care of getting wow tokens from the Blizzard API.

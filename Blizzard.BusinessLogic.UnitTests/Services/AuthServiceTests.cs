@@ -1,32 +1,29 @@
-﻿using System.Net;
+﻿using Microsoft.Extensions.Logging.Abstractions;
+using MigsTech.Blizzard.BusinessLogic.Services;
+using RichardSzalay.MockHttp;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using MigsTech.Blizzard.Data.Services;
-using Moq;
-using RichardSzalay.MockHttp;
 using Xunit;
 
-namespace MigsTech.Blizzard.Data.UnitTests.Services
+namespace MigsTech.Blizzard.BusinessLogic.UnitTests.Services
 {
-    public class OAuth2ServiceTests
+    public class AuthServiceTests
     {
         #region Fields and Properties
         internal const string DefaultAuthResponse = @"{ 'expires_in': 86399, 'access_token': '12345' }";
 
-        private readonly MockHttpMessageHandler handler;
-        private readonly Mock<ILogger<OAuth2Service>> logger;
-        private readonly OAuth2Service service; 
+        private readonly MockHttpMessageHandler _handler;
+        private readonly AuthService _service;
         #endregion
 
         #region Constructors
-        public OAuth2ServiceTests()
+        public AuthServiceTests()
         {
-            this.handler = new MockHttpMessageHandler();
-            this.logger = new Mock<ILogger<OAuth2Service>>();
+            _handler = new MockHttpMessageHandler();
 
-            this.service = new OAuth2Service(new HttpClient(this.handler), logger.Object);
-        } 
+            _service = new AuthService(new HttpClient(_handler), NullLogger<AuthService>.Instance);
+        }
         #endregion
 
         #region Tests
@@ -34,33 +31,32 @@ namespace MigsTech.Blizzard.Data.UnitTests.Services
         public void OAuth2Service_GetAuthToken_ReturnsTypeString()
         {
             // Arrange
-            this.handler
-                .Expect(HttpMethod.Post, OAuth2Service.BlizzardAuthUri)
+            _handler
+                .Expect(HttpMethod.Post, AuthService.BlizzardAuthEndpoint)
                 .Respond(HttpStatusCode.OK, "application/json", DefaultAuthResponse);
 
             // Act
-            var response = this.service.GetAuthToken();
+            var response = _service.GetAuthTokenAsync();
 
             // Assert
             Assert.IsAssignableFrom<string>(response.Result);
-            this.handler.VerifyNoOutstandingExpectation();
+            _handler.VerifyNoOutstandingExpectation();
         }
 
         [Fact]
         public async Task OAuth2Service_GetAuthToken_OnMultipleCallsWithinValidityWindow_CallsHttpOnce()
         {
             // Arrange
-            var request = this.handler
-                .When(HttpMethod.Post, OAuth2Service.BlizzardAuthUri)
+            var request = _handler
+                .When(HttpMethod.Post, AuthService.BlizzardAuthEndpoint)
                 .Respond(HttpStatusCode.OK, "application/json", DefaultAuthResponse);
 
-            await this.service.GetAuthToken();
-
             // Act
-            var response = await this.service.GetAuthToken();
+            await _service.GetAuthTokenAsync();
+            await _service.GetAuthTokenAsync();
 
             // Assert
-            Assert.Equal(1, this.handler.GetMatchCount(request));
+            Assert.Equal(1, _handler.GetMatchCount(request));
         }
 
         [Fact]
@@ -69,17 +65,16 @@ namespace MigsTech.Blizzard.Data.UnitTests.Services
             // Arrange
             const string expectedToken = "12345";
 
-            var request = this.handler
-                .Expect(HttpMethod.Post, OAuth2Service.BlizzardAuthUri)
+            var request = _handler
+                .Expect(HttpMethod.Post, AuthService.BlizzardAuthEndpoint)
                 .Respond(HttpStatusCode.OK, "application/json", DefaultAuthResponse);
 
-            await this.service.GetAuthToken();
+            await _service.GetAuthTokenAsync();
 
             // Act
-            var response = await this.service.GetAuthToken();
+            var response = await _service.GetAuthTokenAsync();
 
             // Assert
-            Assert.Equal(1, this.handler.GetMatchCount(request));
             Assert.Equal(expectedToken, response);
         }
 
@@ -93,23 +88,23 @@ namespace MigsTech.Blizzard.Data.UnitTests.Services
                 'access_token': '45678',
             }";
 
-            this.handler
-                .Expect(HttpMethod.Post, OAuth2Service.BlizzardAuthUri)
+            _handler
+                .Expect(HttpMethod.Post, AuthService.BlizzardAuthEndpoint)
                 .Respond(HttpStatusCode.OK, "application/json", tokenExpiredAuthResponse);
 
-            await this.service.GetAuthToken();
+            await _service.GetAuthTokenAsync();
 
-            this.handler
-                .Expect(HttpMethod.Post, OAuth2Service.BlizzardAuthUri)
+            _handler
+                .Expect(HttpMethod.Post, AuthService.BlizzardAuthEndpoint)
                 .Respond(HttpStatusCode.OK, "application/json", DefaultAuthResponse);
 
             // Act
-            var response = await this.service.GetAuthToken();
+            var response = await _service.GetAuthTokenAsync();
 
             // Assert
             Assert.Equal(expectedToken, response);
-            this.handler.VerifyNoOutstandingExpectation();
-        } 
+            _handler.VerifyNoOutstandingExpectation();
+        }
         #endregion
     }
 }
